@@ -1,0 +1,63 @@
+#3
+. Create a Food Database with the fields: (food id, food cat, food name, chef name [ ], price, 
+ingredients [], hotel name, hotel address {no, street, locality, city})
+
+db.createCollection("foods")
+
+doc1= {foodid:1, foodcat:"fastfood", foodname:"burger", chefname:["naveen","rakesh"], price:500, ingredients:["cheese","corn"], hotelname:"mcburger", address:{no:31, street:"belroad", locality:"yelahanka", city:"bangalore"}}
+db.foods.insert(doc1)
+
+doc2= {foodid:2, foodcat:"fastfood", foodname:"pizza", chefname:["naveen","rudresh"], price:600, ingredients:["cheese","corn"], hotelname:"mcburger", address:{no:32, street:"belroad", locality:"yelahanka", city:"bangalore"}}
+db.foods.insert(doc2)
+
+doc3= {foodid:3, foodcat:"main course", foodname:"biriyani", chefname:["rakesh","rudresh"], price:500, ingredients:["chicken","rice"], hotelname:"empire", address:{no:33, street:"belroad", locality:"yelahanka", city:"bangalore"}}
+db.foods.insert(doc3)
+
+
+//price of pizza with ingredients
+db.foods.find({foodname:"pizza"},{foodname:1,ingredients:1,price:1,_id:0}).pretty()
+
+//display the item in the price range(500,800)
+db.foods.find({$and:[{price:{$gt:500}},{price:{$lt:800}}]},{foodname:1,price:1,_id:0}).pretty()
+
+//display the items prepared by naveen and rakesh
+db.foods.find({chefname:{$all:["naveen","rakesh"]}},{chefname:1,foodname:1,_id:0})
+
+//display the items prepared by naveen or rakesh
+db.foods.find({chefname:{$in:["naveen","rakesh"]}},{chefname:1,foodname:1,_id:0})
+
+//add one chef to the food "pizza"
+db.foods.update({foodname:"pizza"},{$push:{chefname:"kushal"}},{multi:true})
+db.foods.find({chefname:"kushal"}).pretty()
+
+//add ingredients to the food burger
+db.foods.update({foodname:"burger"},{$addToSet:{ingredients:["butter","bun"]}})
+db.foods.find({foodname:"burger"})
+
+//delete last ingredient added to the food Burger
+db.foods.update({foodname:"burger"},{$pop:{ingredients:1}},{multi:true})
+db.foods.find({foodname:"burger"})
+
+//delete all the ingredients from the food biriyani
+db.foods.update({foodname:"biriyani"},{$pop:{ingredients:1}})
+db.foods.find({foodname:"biriyani"})
+db.foods.update({foodname:"biriyani"},{$pop:{ingredients:1}})
+db.foods.find({foodname:"biriyani"})
+[have to be done 2 times to delete all ingredients]
+
+//Add food type to the burger
+db.foods.update({foodname:"burger"},{$set:{foodtype:"normal"}},{multi:true})
+db.foods.find({foodname:"burger"})
+
+//modify the burger price by 200
+db.foods.update({foodname:"burger"},{$set:{price:200}},{multi:true})
+db.foods.find({foodname:"burger"})
+
+//add or insert a new food item with food id "f08" using upsert as true
+db.foods.update({foodid:"f08"},{foodid:"f08",foodcat:"chats",foodname:"panipuri",chefname:["dhanush","pruthvi"],price:200,ingredients:["onion","puri"],hotelname:"chat street",address:{no:16,street:"8th",locality:"hebbal",city:"bangalore"}},true)
+db.food.find({foodname:"panipuri"})
+
+
+//increment the price of all food item in food cat:fastfood by 120
+db.foods.update({foodcat:"fastfood"},{$inc:{price:120}},false,true)
+db.foods.find({foodcat:"fastfood"})
