@@ -1,0 +1,77 @@
+5.Create a book Data Base with the fields: (isbn, bname, author [], year, publisher, price) 
+
+
+db.createCollection("books")
+
+doc1=({isbn:"e40", bname:"let us C", author:["yeshwanth", "kanaka"], year:2012, 
+publisher:"pearson", price:100})
+db.books.insert(doc1)
+
+doc2=({isbn:"e41", bname:"let us C", author:["rudresh"], year:2013, 
+publisher:"pearson", price:200})
+db.books.insert(doc2)
+
+doc3=({isbn:"e42", bname:"let us C", author:["herbert"], year:2014, 
+publisher:"pearson", price:300})
+db.books.insert(doc3)
+
+doc4=({isbn:"e43", bname:"java", author:["kuvempu"], year:2015, 
+publisher:"tmh", price:400})
+db.books.insert(doc4)
+
+
+doc5=({isbn:"e44", bname:"java", author:["rama"], year:2016, 
+publisher:"tmh", price:500})
+db.books.insert(doc5)
+
+doc6=({isbn:"e45", bname:"java", author:["herbert","kuvempu"], year:2016, 
+publisher:"tmh", price:600})
+db.books.insert(doc6)
+
+\\List all the documents.
+db.books.find().pretty()
+
+
+\\List all book details except year and price.
+db.books.find({},{year:0,price:0})
+
+\\Display all the books authored by rudresh.
+db.books.find({author:"rudresh"})
+
+\\List all the books published by pearson.
+db.books.find({publisher:"pearson"})
+
+\\List the publisher of book java.
+db.books.find({bname:"java"},{publisher:1,bname:1,_id:0})
+
+\\List the author, publisher and year of the book “Let us C”.
+db.books.find({bname:"let us C"},{bname:1, publisher:1,author:1,year:1})
+
+\\Display the price of “Let us C” except _id.
+db.books.find({bname:"let us C"},{bname:1, price:1, _id:0})
+
+\\Sort and display all books in ascending order of book names.
+db.books.find({},{bname:1}).sort({bname:1})
+
+
+\\Sort and display only 3 books in descending order of price.
+db.books.find().sort({price: -1}).limit(3)
+
+
+\\Display all the books written by herbet and kuvempu.
+db.books.find({author:{$all:["herbert","kuvempu"]}},{bname:1,author:1,price:1})
+
+\\Display all the books either written by herbet or kuvempu.
+db.books.find({author:{$in:["herbert","kuvempu"]}},{bname:1,author:1,price:1})
+
+\\Display all the books where rama is the first author.
+db.books.find({"author.0":{$eq:"rama"}})
+
+
+
+
+
+
+
+
+

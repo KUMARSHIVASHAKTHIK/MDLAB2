@@ -1,0 +1,102 @@
+doc4 = {eid:005, ename:"karan", dept:"production", desig:"hr", salary:45000, yoj:2016, 
+address:{dno:47, street:3, locality:"RRnagar", city:"bangalore"} }
+db.emp.insert(doc4)
+
+doc1 = {eid:002, ename:"kiran", dept:"production", desig:"hr", salary:40000, yoj:2016, 
+address:{dno:47, street:3, locality:"JPnagar", city:"bangalore"} }
+db.emp.insert(doc1)
+
+doc2 = {eid:003, ename:"Rahul", dept:"production", desig:"developer", salary:50000, yoj:2016, 
+address:{dno:47, street:3, locality:"RRnagar", city:"bangalore"} }
+db.emp.insert(doc2)
+
+
+doc3 = {eid:004, ename:"Prajwal", dept:"production", desig:"developer", salary:70000, yoj:2016, 
+address:{dno:47, street:3, locality:"RRnagar", city:"bangalore"} }
+db.emp.insert(doc3)
+
+doc5 = {eid:006, ename:"pratap", dept:"production", desig:"hr", salary:75000, yoj:2016, 
+address:{dno:47, street:3, locality:"JPnagar", city:"bangalore"} }
+db.emp.insert(doc5)
+
+doc6 = {eid:007, ename:"prarth", dept:"production", desig:"developer", salary:55000, yoj:2016, 
+address:{dno:47, street:3, locality:"JPnagar", city:"bangalore"} }
+db.emp.insert(doc6)
+
+doc7 = {eid:008, ename:"psan", dept:"production", desig:"hr", salary:60000, yoj:2016, 
+address:{dno:47, street:3, locality:"JPnagar", city:"bangalore"} }
+db.emp.insert(doc7)
+
+doc8 = {eid:009, ename:"rajan", dept:"production", desig:"hr", salary:65000, yoj:2016, 
+address:{dno:47, street:3, locality:"RRnagar", city:"bangalore"} }
+db.emp.insert(doc8)
+
+
+doc9 = {eid:010, ename:"karthik", dept:"production", desig:"hr", salary:70000, yoj:2016, 
+address:{dno:47, street:3, locality:"RRnagar", city:"bangalore"} }
+db.emp.insert(doc9)
+
+
+doc10 = {eid:011, ename:"omkar", dept:"production", desig:"hr", salary:70000, yoj:2016, 
+address:{dno:47, street:3, locality:"RRnagar", city:"bangalore"} }
+db.emp.insert(doc10)
+
+
+#i]insertion
+
+#ii. Display all the employees with salary in range (50000, 75000). 
+db.emp.find({$and:[{salary:{$gt:50000}},{salary:{$lt:75000}}]})
+
+
+#iii. Display all the employees with designation developer.
+db.emp.find({desig:"developer"},{ename:1,desig:1,_id:0})
+
+#iv.. Display the Salary of “Rahul”.
+db.emp.find({ename:"Rahul"},{ename:1,salary:1,_id:0})
+
+#v. Display the city of employee “Rahul”. 
+db.emp.find({ename:"Rahul"},{ename:1,"address.city":1,_id:0})
+
+#vi. Update the salary of developers by 5000 increment.
+db.emp.update({desig:"developer"},{$inc:{"salary":5000}},{multi:true})
+db.emp.find({desig:"developer"})
+
+#vii. Add field age to employee “Rahul”.
+db.emp.update({ename:"Rahul"},{$set:{age:"22"}},{multi:true})
+db.emp.find({ename:"Rahul"})
+
+#viii. Remove YOJ from “Rahul”.
+db.emp.update({ename:"Rahul"},{$unset:{yoj:1}})
+db.emp.find({ename:"Rahul"})
+
+#ix. Add an array field project to “Rahul”.
+db.emp.update({ename:"Rahul"},{$push:{projects:"p1"}})
+db.emp.find({ename:"Rahul"})
+
+#x. Add p2 and p3 project to “Rahul”.
+db.emp.update({ename:"Rahul"},{$push:{projects:{$each:["p2","p3"]}}})
+db.emp.find({ename:"Rahul"})
+
+#xi. Remove p3 from “Rahul”.
+db.emp.update({ename:"Rahul"},{$pull:{projects:"p3"}})
+db.emp.find({ename:"Rahul"})
+
+#xii. Add a new embedded object “contacts” with “email” and “phone” as array objects to “Rahul”.
+db.emp.update({ename:"Rahul"},{$push:{contacts:{phone:"9036240380", 
+email:"rahul@gmail.com"}}})
+db.emp.find({ename:"Rahul"})
+
+#xiii. Add two phone numbers to “Rahul”.
+db.emp.update({ename:"Rahul"},{$addToSet:{"contact.phone":[9738751143,988073 0784]}})
+db.emp.find({ename:"Rahul"})
+
+
+
+
+
+
+
+
+
+
+
